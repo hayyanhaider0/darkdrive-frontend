@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import MainLayout from "./components/MainLayout";
+import Authorized from "./components/Authorized";
 
 const App = () => {
 	return (
@@ -13,7 +14,7 @@ const App = () => {
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route path='/login' element={<LoginPage />} />
-					<Route path='/user' element={<Dashboard />} />
+					<Route path='/user' element={<Authorized element={<Dashboard />} />} />
 					<Route path='/admin' element={<Admin />} />
 				</Routes>
 			</MainLayout>

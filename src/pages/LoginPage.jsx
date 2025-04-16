@@ -10,7 +10,7 @@ const LoginPage = () => {
 	};
 
 	return (
-		<section className='flex flex-col gap-4 items-center justify-center py-16'>
+		<section className='flex flex-col gap-4 items-center justify-center py-16 mt-24'>
 			{signUp ? (
 				<>
 					<SignUpPage />

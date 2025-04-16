@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { loginUser } from "../api/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -13,10 +13,6 @@ const LoginPage = () => {
 	};
 
 	const handleSubmit = async (e) => {
-		if (formData.email === "user@admin.com" && formData.password === "admin") {
-			navigate("/admin");
-		}
-
 		e.preventDefault();
 		setError("");
 		setLoading(true);
@@ -27,6 +23,7 @@ const LoginPage = () => {
 			if (result) {
 				localStorage.setItem("email", formData.email);
 				navigate("/user");
+				window.dispatchEvent(new Event("storage")); // Trigger Navbar re-render
 			} else {
 				setError("Login failed - no token received");
 			}

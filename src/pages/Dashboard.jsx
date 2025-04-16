@@ -2,20 +2,20 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import KeyModal from "../components/KeyModal";
 import FileUpload from "../components/FileUpload";
-import { Download, Trash2 } from "lucide-react";
+import { Download, Loader, Lock, Trash2 } from "lucide-react";
 
 const Dashboard = () => {
 	const [files, setFiles] = useState([]);
 	const [selectedFile, setSelectedFile] = useState(null);
-	const [showKeyModal, setShowKeyModal] = useState(false);
+	const [showModal, setShowModal] = useState(false);
 	const [downloadError, setDownloadError] = useState("");
 
-	const fileEndPoint = "http://localhost:8080/api/files";
-	const API_URL = "http://localhost:8080/api/files";
+	const BACKEND_URL = import.meta.env.VITE_BACKEND;
+	const API_URL = `${BACKEND_URL}/api/files`;
 
 	const handleDelete = async (file) => {
 		try {
-			const response = await axios.delete(`${fileEndPoint}/${file.id}`, {
+			const response = await axios.delete(`${API_URL}/${file.id}`, {
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem("userToken")}`,
 				},
@@ -29,11 +29,11 @@ const Dashboard = () => {
 	};
 
 	const downloadFile = async (password) => {
+		setDownloadError("loading");
 		try {
 			const response = await axios.get(`${API_URL}/download/${selectedFile.id}`, {
 				params: {
 					password: password,
-					locked: false,
 				},
 				responseType: "blob",
 				headers: {
@@ -53,7 +53,8 @@ const Dashboard = () => {
 			document.body.removeChild(link); // Cleanup
 
 			// Close modal after successful download
-			setShowKeyModal(false);
+			setDownloadError("");
+			setShowModal(false);
 		} catch (err) {
 			// in this case the user entered the wrong pass
 			setDownloadError("Download failed, please check password.");
@@ -63,7 +64,7 @@ const Dashboard = () => {
 	useEffect(() => {
 		const getUserFiles = async () => {
 			try {
-				const response = await axios.get(`${fileEndPoint}`, {
+				const response = await axios.get(`${API_URL}`, {
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("userToken")}`,
 					},
@@ -81,45 +82,46 @@ const Dashboard = () => {
 
 	const handleDownloadClick = (file) => {
 		setSelectedFile(file);
-		setShowKeyModal(true);
-	};
-
-	const closeKeyModal = () => {
-		setShowKeyModal(false);
-		setDownloadError("");
+		if (file.locked) {
+			setShowModal(true);
+		} else {
+			downloadFile("");
+		}
 	};
 
 	return (
 		<>
-			{showKeyModal && (
+			{showModal && (
 				<KeyModal
 					text='Enter the encryption key'
-					checked={false}
-					onSubmit={closeKeyModal}
-					onPasswordEnter={downloadFile}
-					closeModal={closeKeyModal}
+					onSubmit={(password) => downloadFile(password)}
+					closeModal={() => setShowModal(false)}
+					status={downloadError}
 				/>
 			)}
-			<main className='flex flex-col md:flex-row md:flex-grow'>
+			<main className='flex flex-col md:flex-row md:flex-grow mt-22'>
 				<section className='flex flex-col flex-grow'>
 					<FileUpload setFilesList={setFiles} />
 				</section>
-				<section className='p-6 w-5/6'>
+				<section className='p-6 md:w-5/6'>
 					<ul className='max-h-[90vh] overflow-y-auto custom-scrollbar flex flex-col gap-2 border-gray-700'>
 						{files.length > 0 ? (
-							files.map((file) => (
+							files.map((file, index) => (
 								<li
-									key={file.id}
-									className='flex justify-between bg-white/10 p-2 px-4 rounded-md hover:bg-white/5 transition'
+									key={index}
+									className='flex w-full justify-between bg-white/10 p-2 px-4 rounded-md hover:bg-white/5 transition'
 								>
-									<p>{file.fileName}</p>
+									<p className='flex-1 truncate pr-2'>{file.fileName}</p>
 									<div className='flex gap-4'>
+										{file.locked && <Lock />}
 										<button
 											title='Download'
 											onClick={() => handleDownloadClick(file)}
-											className='cursor-pointer w-fit p-0 bg-transparent text-accent underline'
+											className={`${
+												downloadError === "loading" ? "cursor-not-allowed" : "cursor-pointer"
+											} w-fit p-0 bg-transparent text-accent underline`}
 										>
-											<Download />
+											{downloadError === "loading" ? <Loader /> : <Download />}
 										</button>
 										<button
 											onClick={() => handleDelete(file)}

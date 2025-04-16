@@ -1,17 +1,31 @@
 import { Link } from "react-router-dom";
 import LandingImage from "/LandingImage.jpg";
+import Mockup from "/DarkDriveMockup.png";
 import Card from "../components/Card";
 
 const Home = () => {
 	return (
 		<>
 			<span
-				style={{ backgroundImage: `url(${LandingImage})` }}
-				className='flex bg-cover bg-center h-[44rem] items-center'
+				style={{
+					backgroundImage: `linear-gradient(to bottom right, rgba(0,0,0,0.1), rgba(0,0,0,0.6)), url(${LandingImage})`,
+					backgroundSize: "cover",
+					backgroundPosition: "center",
+				}}
+				className='grid sm:grid-cols-2 p-8 sm:gap-32 sm:p-16 bg-cover bg-center min-h-fit h-[44rem] items-center mt-16'
 			>
-				<h4 className='text-black font-bold text-center text-8xl sm:text-[14rem] w-full font-display'>
-					DARK DRIVE
-				</h4>
+				<div className='flex flex-col items-center justify-center gap-8 bg-white/40 p-8 sm:p-16 text-center rounded-lg'>
+					<h1 className='font-display text-background'>Welcome To DarkDrive</h1>
+					<h2 className='text-background'>
+						Your Files. Your Rules. With end-to-end encryption built in, your files are locked
+						down—only you hold the key. Whether you're storing personal documents or sensitive data,
+						DarkDrive keeps it private, secure, and accessible only to you.
+					</h2>
+					<Link to='/user'>
+						<button>Secure Your Files Now</button>
+					</Link>
+				</div>
+				<img src={Mockup} className='hidden sm:block' />
 			</span>
 			<section className='grid md:grid-cols-2 items-center justify-center gap-8 py-8'>
 				<aside className='flex flex-col items-center justify-center p-8'>
