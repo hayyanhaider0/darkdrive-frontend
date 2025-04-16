@@ -1,8 +1,8 @@
 // auth.js
 import axios from "axios";
 
-
-const API_URL = "http://localhost:8080/auth"
+const BACKEND_URL = import.meta.env.VITE_BACKEND;
+const API_URL = `${BACKEND_URL}/auth`;
 
 export const logout = () => {
 	localStorage.removeItem("userToken");
