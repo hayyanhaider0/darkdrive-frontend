@@ -14,7 +14,7 @@ const Home = () => {
 				}}
 				className='grid lg:grid-cols-2 p-8 lg:gap-32 sm:px-16 bg-cover bg-center items-center mt-22'
 			>
-				<div className='flex flex-col items-center justify-center lg:gap-8 backdrop-blur-sm p-8 sm:p-16 text-center rounded-lg'>
+				<div className='flex flex-col items-center justify-center gap-8 bg-white/10 backdrop-blur-sm p-8 sm:p-16 text-center rounded-lg'>
 					<h1 className='font-display text-background'>Welcome To DarkDrive</h1>
 					<h2 className='text-background'>
 						Your Files. Your Rules. With end-to-end encryption built in, your files are locked
