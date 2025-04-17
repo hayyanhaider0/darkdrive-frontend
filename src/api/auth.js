@@ -13,7 +13,7 @@ export const getToken = () => {
 };
 
 export const isAuthenticated = () => {
-	return !!localStorage.getItem("userToken");
+	return !!getToken();
 };
 
 axios.interceptors.request.use(
@@ -24,7 +24,16 @@ axios.interceptors.request.use(
 		}
 		return config;
 	},
+	(error) => Promise.reject(error)
+);
+
+axios.interceptors.response.use(
+	(response) => response,
 	(error) => {
+		if (error.response?.status === 401) {
+			logout();
+			window.location.href = "/login";
+		}
 		return Promise.reject(error);
 	}
 );
@@ -32,7 +41,6 @@ axios.interceptors.request.use(
 export const loginUser = async (userData) => {
 	try {
 		const response = await axios.post(`${API_URL}/login`, userData);
-		// Save token to localStorage if login successful
 		if (response.data) {
 			localStorage.setItem("userToken", response.data);
 		}

@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 
 const KeyModal = ({
+	type,
 	text,
 	filename,
 	closeModal,
@@ -60,7 +61,7 @@ const KeyModal = ({
 						<label>Lock this file</label>
 					</div>
 				)}
-				{((checkbox && showInput) || !checkbox) && (
+				{((checkbox && showInput) || !checkbox) && type !== "Delete" && (
 					<input
 						ref={inputRef}
 						placeholder='Enter password'
@@ -79,7 +80,7 @@ const KeyModal = ({
 							(status === "loading" || uploadStatus === "Uploading...") && "loading-glimmer"
 						}`}
 					>
-						{checkbox ? "Upload" : "Download"}
+						{type}
 						{status === "loading" || uploadStatus === "Uploading..." ? "ing" : " File"}
 					</button>
 				</span>

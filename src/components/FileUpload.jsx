@@ -83,10 +83,9 @@ const FileUpload = ({ setFilesList }) => {
 		try {
 			// Send a call to the backend to upload a file.
 			const response = await uploadFile(files, password);
-			console.log(response);
 
-			// no idea lol
-			setFilesList((prevFiles) => [...prevFiles, response]);
+			// Set new files list.
+			setFilesList((prevList) => [...prevList, response]);
 
 			// If file is uploaded, show it.
 			setTimeout(() => {
@@ -108,6 +107,7 @@ const FileUpload = ({ setFilesList }) => {
 		<>
 			{showModal && (
 				<KeyModal
+					type='Upload'
 					text='Choose how to upload your files.'
 					filename={files.name}
 					checkbox={true}

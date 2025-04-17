@@ -8,12 +8,14 @@ const Dashboard = () => {
 	const [files, setFiles] = useState([]);
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [showModal, setShowModal] = useState(false);
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [downloadError, setDownloadError] = useState("");
 
 	const BACKEND_URL = import.meta.env.VITE_BACKEND;
 	const API_URL = `${BACKEND_URL}/api/files`;
 
 	const handleDelete = async (file) => {
+		setDownloadError("loading");
 		try {
 			const response = await axios.delete(`${API_URL}/${file.id}`, {
 				headers: {
@@ -23,15 +25,17 @@ const Dashboard = () => {
 			console.log(response.data);
 
 			setFiles((prevFiles) => prevFiles.filter((f) => f.id !== file.id));
+			setDownloadError("");
+			setShowDeleteModal(false);
 		} catch (err) {
 			console.log("Error deleting file: ", err);
 		}
 	};
 
-	const downloadFile = async (password) => {
+	const downloadFile = async (password, file) => {
 		setDownloadError("loading");
 		try {
-			const response = await axios.get(`${API_URL}/download/${selectedFile.id}`, {
+			const response = await axios.get(`${API_URL}/download/${file.id}`, {
 				params: {
 					password: password,
 				},
@@ -47,7 +51,7 @@ const Dashboard = () => {
 			// Create a download link and click it
 			const link = document.createElement("a");
 			link.href = window.URL.createObjectURL(blob);
-			link.setAttribute("download", selectedFile.fileName);
+			link.setAttribute("download", file.fileName);
 			document.body.appendChild(link);
 			link.click();
 			document.body.removeChild(link); // Cleanup
@@ -81,21 +85,36 @@ const Dashboard = () => {
 	}, []);
 
 	const handleDownloadClick = (file) => {
-		setSelectedFile(file);
 		if (file.locked) {
+			setSelectedFile(file);
 			setShowModal(true);
 		} else {
-			downloadFile("");
+			downloadFile("", file);
 		}
+	};
+
+	const handleDeleteClick = (file) => {
+		setSelectedFile(file);
+		setShowDeleteModal(true);
 	};
 
 	return (
 		<>
 			{showModal && (
 				<KeyModal
+					type='Download'
 					text='Enter the encryption key'
-					onSubmit={(password) => downloadFile(password)}
+					onSubmit={(password) => downloadFile(password, selectedFile)}
 					closeModal={() => setShowModal(false)}
+					status={downloadError}
+				/>
+			)}
+			{showDeleteModal && (
+				<KeyModal
+					type='Delete'
+					text='Do you want to delete this file?'
+					closeModal={() => setShowDeleteModal(false)}
+					onSubmit={() => handleDelete(selectedFile)}
 					status={downloadError}
 				/>
 			)}
@@ -124,7 +143,7 @@ const Dashboard = () => {
 											{downloadError === "loading" ? <Loader /> : <Download />}
 										</button>
 										<button
-											onClick={() => handleDelete(file)}
+											onClick={() => handleDeleteClick(file)}
 											title='Delete'
 											className='p-0 bg-transparent text-red-600'
 										>
