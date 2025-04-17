@@ -51,7 +51,7 @@ const Navbar = () => {
 		<>
 			<nav className='fixed w-full z-20'>
 				<Link to='/'>
-					<h1 className='font-display'>Dark Drive</h1>
+					<h1 className='font-display'>DarkDrive</h1>
 				</Link>
 				{isMobile ? (
 					<button

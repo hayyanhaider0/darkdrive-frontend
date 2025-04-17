@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { signupUser } from "../api/auth";
 import VerificationModal from "./VerificationModal";
-// import "./SignUpPage.css";
 
 const SignUpPage = () => {
 	const [showModal, setShowModal] = useState(false);

@@ -8,12 +8,13 @@
 	--color-accent: #ffd700; /* Additional accents (gold) */
 	--color-highlight: #ffc700; /* Highlights (gold) */
 
-	--font-display: helvetica, sans-serif;
+	--font-display: "Cormorant", serif;
+	--font-roboto: roboto, sans-serif;
 }
 
 @layer base {
 	body {
-		@apply text-tertiary bg-background;
+		@apply text-tertiary bg-background font-roboto;
 	}
 }
 
@@ -23,7 +24,7 @@
 	}
 
 	h2 {
-		@apply text-2xl text-center;
+		@apply text-lg sm:text-xl md:text-2xl text-center;
 	}
 
 	nav {

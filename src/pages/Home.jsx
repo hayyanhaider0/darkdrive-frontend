@@ -12,9 +12,9 @@ const Home = () => {
 					backgroundSize: "cover",
 					backgroundPosition: "center",
 				}}
-				className='grid sm:grid-cols-2 p-8 sm:gap-32 sm:p-16 bg-cover bg-center min-h-fit h-[44rem] items-center mt-16'
+				className='grid lg:grid-cols-2 p-8 lg:gap-32 sm:px-16 bg-cover bg-center items-center mt-22'
 			>
-				<div className='flex flex-col items-center justify-center gap-8 bg-white/40 p-8 sm:p-16 text-center rounded-lg'>
+				<div className='flex flex-col items-center justify-center lg:gap-8 backdrop-blur-sm p-8 sm:p-16 text-center rounded-lg'>
 					<h1 className='font-display text-background'>Welcome To DarkDrive</h1>
 					<h2 className='text-background'>
 						Your Files. Your Rules. With end-to-end encryption built in, your files are locked
@@ -27,11 +27,11 @@ const Home = () => {
 				</div>
 				<img src={Mockup} className='hidden sm:block' />
 			</span>
-			<section className='grid md:grid-cols-2 items-center justify-center gap-8 py-8'>
+			<section className='grid lg:grid-cols-2 items-center justify-center gap-8 py-8'>
 				<aside className='flex flex-col items-center justify-center p-8'>
-					<div className='flex flex-col gap-8 rounded-3xl p-8 py-12 backdrop-blur-sm'>
+					<div className='flex flex-col gap-8 rounded-3xl p-4 backdrop-blur-sm'>
 						<h1 className='text-accent'>What is DarkDrive?</h1>
-						<p className='text-lg'>
+						<p className='text-sm md:text-base lg:text-lg'>
 							DarkDrive is a decentralized file-sharing system that lets you upload and download
 							files securely across a peer-to-peer network. With no central servers, it’s resilient,
 							private, and nearly impossible to take down. Share and access files freely—without
@@ -52,17 +52,17 @@ const Home = () => {
 					<Card
 						icon='fa-solid fa-lock'
 						heading='Redundant Encryption'
-						paragraph='Each file is encrypted with a unique key, ensuring maximum security and protection.'
+						paragraph='Files can be encrypted with a password, ensuring maximum security and smooth user experience.'
 					/>
 					<Card
 						icon='fa-solid fa-database'
 						heading='Secure Storage'
-						paragraph='Encrypted files are safely stored, while plaintext versions are immediately erased.'
+						paragraph='Encrypted files are safely stored, with content visible only to the user.'
 					/>
 					<Card
 						icon='fa-solid fa-key'
 						heading='Full Access Control'
-						paragraph='Users receive an encryption key and token, maintaining full control over their files.'
+						paragraph='Users decide a password per file, maintaining full control over their files.'
 					/>
 				</aside>
 			</section>
